@@ -124,21 +124,21 @@ int storysize=slist.size();
     <div class="mypage-header">
       <h1 class="text-2xl font-bold">안녕하세요! <%=dto.getName() %>(<%=dto.getUserid() %>) 님</h1>
       <h6 style="color: gray;">Welcome!</h6>
-      <div class="mileage">보유 마일리지 (<%=dto.getMileage() %>P)</div>
+      <%-- <div class="mileage">보유 마일리지 (<%=dto.getMileage() %>P)</div> --%>
     </div>
-    <%
+    <%-- <%
     int totalMileage = 0;
     for(int i=0;i<list.size();i++) {
         HashMap<String,String> map=list.get(i);
         int price = Integer.parseInt(map.get("lastpay"));
         totalMileage += (double)(price * 0.1);
     }
-    %>
+    %> --%>
 
     <div class="mypage-section">
-      <h4 class="text-2xl font-bold" style="color: #000080">마일리지 이용내역</h4>
+      <h4 class="text-2xl font-bold" style="color: #000080">마일리지</h4>
       <div class="mypage-box">
-        <p>적립예정: <%=totalMileage %>P</p>
+        <p>보유 마일리지: <%=dto.getMileage() %>P</p>
       </div>
     </div>
     <div class="mypage-section">
