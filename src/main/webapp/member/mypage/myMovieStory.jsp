@@ -97,10 +97,12 @@
     .mphoto{
     	width: 200px;
     	height: 300px;
+    	object-fit: cover;
     	
     }
 	
 	.postertd{
+		flex-shrink: 0;
 		box-shadow: 10px 10px 10px gray;	
 		border: 1px solid gray;
 		width: 200px;
@@ -113,6 +115,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  
 }
   </style>
 </head>
