@@ -33,7 +33,8 @@
 					<p class="text-sm"><%=dto.getRelease_date()%></p>
 				</div>
 				<button
-					class="!bg-primary text-white px-4 py-2 !rounded-button whitespace-nowrap w-full mb-2">
+					class="!bg-primary text-white px-4 py-2 !rounded-button whitespace-nowrap w-full mb-2"
+					onclick="location.href='<%=root%>/index.jsp?main=book/booking/bookMain.jsp&movie_id=<%=dto.getId()%>'">
 					예매하기</button>
 				<button
 					class="border border-white text-white px-4 py-2 !rounded-button whitespace-nowrap w-full"
