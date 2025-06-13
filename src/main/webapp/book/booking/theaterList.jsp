@@ -13,15 +13,17 @@
     String movie_id = request.getParameter("movie_id");
     System.out.println("영화ID: " + movie_id);
     String region = request.getParameter("region");
+    String screening_date = request.getParameter("screening_date");
     System.out.println("지역: " + region);
     TheaterDAO dao = TheaterDAO.getInstance();
 
-    List<HashMap<String,String>> list = dao.getTheaterName(movie_id, region);
+    List<HashMap<String,String>> list = dao.getTheaterListWithReserve(movie_id,screening_date, region);
     JSONArray arr = new JSONArray();
 
     for(HashMap<String,String> map : list){
     	JSONObject ob = new JSONObject();
     	ob.put("theater_name", map.get("theater_name"));
+    	ob.put("can_reserve",map.get("can_reserve"));
     	arr.add(ob);
     }
     %>

@@ -11,6 +11,24 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 <title>회원가입</title>
+<%
+    String root=request.getContextPath();
+    String loginok=(String)session.getAttribute("loginok");
+
+    System.out.println(loginok);
+    
+    //로그인 했을 경우 회원가입 페이지로 이동 못하게
+    if(loginok=="yes")
+    {            
+%>
+    <script type="text/javascript">
+    
+        //history.back();
+        location.href="<%=root%>/index.jsp";
+    </script>
+<%
+}
+%>
 <script type="text/javascript">
 	$(function () {
 		
@@ -265,8 +283,6 @@ i.dash {
 }
 </style>
 <%
-	String root=request.getContextPath();
-
 	String signupButtonStr = "가입하기";
 	String adminChk = "";
 		

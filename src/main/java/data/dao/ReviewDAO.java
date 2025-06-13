@@ -72,38 +72,6 @@ public class ReviewDAO {
 
 	    return list;
 	}
-
-	//중복제거 메서드
-		public List<ReviewDTO> getReviewsMovieId(String movieId) {
-		    List<ReviewDTO> list = new ArrayList<>();
-		    String sql = "SELECT DISTINCT user_id FROM review WHERE movie_id = ?;";
-
-		    Connection conn = db.getConnection();
-		    PreparedStatement pstmt = null;
-		    ResultSet rs = null;
-
-		    try {
-		        pstmt = conn.prepareStatement(sql);
-		        pstmt.setString(1, movieId);
-		        rs = pstmt.executeQuery();
-
-		        while (rs.next()) {
-		            ReviewDTO dto = new ReviewDTO();
-		            dto.setUserId(rs.getString("user_id"));
-		            dto.setContent(rs.getString("content"));
-		            dto.setRating(rs.getInt("rating"));
-		            dto.setCreatedAt(rs.getTimestamp("created_at")); // Date/Time 객체면 Timestamp로
-
-		            list.add(dto);
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    } finally {
-		        db.dbClose(rs, pstmt, conn);
-		    }
-
-		    return list;
-		}
 		
 		//영화 시청여부
 		public boolean hasWatchedMovie(String userId, String movieId) {
@@ -111,9 +79,11 @@ public class ReviewDAO {
 		        SELECT COUNT(*)
 		        FROM reservation r
 		        JOIN screening s ON r.screening_id = s.id
+		        JOIN movie m ON s.movie_id = m.id
 		        WHERE r.user_id = ?
 		          AND s.movie_id = ?
 		          AND r.booked = 'Y'
+		          AND now() > (s.start_time + INTERVAL m.runtime MINUTE)
 		        """;
 
 		    try (

@@ -70,7 +70,6 @@ String posterUrl = "https://image.tmdb.org/t/p/w500";
 
 ReviewDAO reviewDao = ReviewDAO.getInstance();
 List<ReviewDTO> reviews = reviewDao.getReviewsByMovieId(id);
-List<ReviewDTO> totalReview = reviewDao.getReviewsMovieId(id);
 
 String movie = dto.getId();
 boolean watched = reviewDao.hasWatchedMovie(numId, movie);
@@ -430,7 +429,7 @@ input:checked+.switch-slider:before {
 					<%
 						} else if (!watched) {
 					%>
-					<p class="text-sm text-red-500">이 영화를 예매한 사용자만 리뷰를 작성할 수 있습니다.</p>
+					<p class="text-sm text-red-500">이 영화를 관람한 사용자만 리뷰를 작성할 수 있습니다.</p>
 					<%
 						} else if (alreadyReviewed) {
 					%>
