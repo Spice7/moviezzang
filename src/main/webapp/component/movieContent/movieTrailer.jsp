@@ -68,7 +68,7 @@ MovieDTO dto = dao.getMovieById("1");
 				<div class="flex space-x-4">
 					<button
 						class="bg-primary text-white px-6 py-3 !rounded-button whitespace-nowrap hover:bg-opacity-90 transition-colors"
-						onclick="location.href='?main=movie/movieDetail.jsp?id=<%=dto.getId()%>&name=<%=dto.getTitle()%>'">
+						onclick="top.location.href='?main=movie/movieDetail.jsp?id=<%=dto.getId()%>&name=<%=dto.getTitle()%>'">
 						상세정보</button>
 					<button
 						class="bg-white text-primary px-6 py-3 !rounded-button whitespace-nowrap hover:bg-opacity-90 transition-colors"
