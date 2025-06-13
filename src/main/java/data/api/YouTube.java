@@ -15,7 +15,7 @@ import org.json.simple.parser.JSONParser;
 public class YouTube {
 //	AIzaSyDyIMSjfrxbhv_x8ZDWkN2e24BnGxMUuZ4 #손영덕 메인키
 //	AIzaSyAg-aITfIzaj_p1X9zGo779nFMNTN_z85o #팀장님 서브키
-    private final String apiKey = "AIzaSyDyIMSjfrxbhv_x8ZDWkN2e24BnGxMUuZ4";
+    private final String apiKey = "AIzaSyBTSEtxwOZLcgffjhBUAGVUqMTU4OYmpls";
 
     public YouTube() {
         // 기본 생성자

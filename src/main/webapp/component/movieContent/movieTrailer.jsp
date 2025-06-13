@@ -10,6 +10,7 @@ YouTube fetcher = new YouTube();
 String trailerId = fetcher.getTrailerVideoId("진격의거인 파이널");
 boolean hasTrailer = trailerId != null && !trailerId.trim().isEmpty();
 
+String loginok = (String)session.getAttribute("loginok");
 
 MovieDAO dao = MovieDAO.getInstance();
 MovieDTO dto = dao.getMovieById("1");
@@ -49,7 +50,7 @@ MovieDTO dto = dao.getMovieById("1");
 
 <% if (hasTrailer) { %>
 
-	
+
 	<section class="relative w-full aspect-[16/9] overflow-hidden">
 		<!-- 영상 재생 iframe 삽입 -->
 		<iframe class="absolute inset-0 w-full h-full"
@@ -70,10 +71,12 @@ MovieDTO dto = dao.getMovieById("1");
 						class="bg-primary text-white px-6 py-3 !rounded-button whitespace-nowrap hover:bg-opacity-90 transition-colors"
 						onclick="location.href='?main=movie/movieDetail.jsp?id=<%=dto.getId()%>&name=<%=dto.getTitle()%>'">
 						상세정보</button>
+					<%if(loginok != null){ %>
 					<button
-						class="bg-white text-primary px-6 py-3 !rounded-button whitespace-nowrap hover:bg-opacity-90 transition-colors"
-						onclick="location.href='?main=book/booking/bookMain.jsp?movie_id=<%=dto.getId()%>'">
+						onclick="location.href='?main=book/booking/bookMain.jsp?movie_id=<%=dto.getId()%>'"
+						class="bg-white text-primary px-6 py-3 !rounded-button whitespace-nowrap hover:bg-opacity-90 transition-colors">
 						예매하기</button>
+						<%}%>
 				</div>
 			</div>
 		</div>
@@ -81,7 +84,7 @@ MovieDTO dto = dao.getMovieById("1");
 <% } else { %>
 <!-- 대체 UI (예: 예고편 없음 표시) -->
 	<div class="p-6 text-center text-gray-700 pt-[10rem]">
-		<h2 class="text-2xl font-bold mb-4"> 예고편을 불러오지 못했습니다 (유튜브 api 할당량초과)</h2>
+		<h2 class="text-2xl font-bold mb-4"> 예고편을 불러오지 못했습니다 (유튜브 api 할당량초과가능성 )</h2>
 		<p>현재 해당 영화의 트레일러를 확인할 수 없습니다.</p>
 	</div>
 <% } %>

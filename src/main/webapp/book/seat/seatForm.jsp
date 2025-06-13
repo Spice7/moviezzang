@@ -125,7 +125,9 @@
 		height: 60px;
 		line-height: 60px;
 		box-shadow: 0px 10px 5px gray;
-		font-size: 1.2em;
+		font-size: 30px;
+		font-weight: bold;
+		font-family: serif;
 	}
 	.seat {
 		border-top: none;
@@ -452,7 +454,10 @@ $(function () {
 	    if (total - selectedCount >= 2) {
 	        if (
 	          !$(`.selseat[row='${row}'][col='${startCol}']`).hasClass("select") &&
-	          !$(`.selseat[row='${row}'][col='${startCol + 1}']`).hasClass("select")
+	          !$(`.selseat[row='${row}'][col='${startCol + 1}']`).hasClass("select")  &&
+
+	          !$(`.selseat[row='${row}'][col='${startCol}']`).hasClass("reserved") &&
+	          !$(`.selseat[row='${row}'][col='${startCol + 1}']`).hasClass("reserved")
 	        ) {
 	          $(`.selseat[row='${row}'][col='${startCol}']`).addClass("select");
 	          $(`.selseat[row='${row}'][col='${startCol + 1}']`).addClass("select");
@@ -564,7 +569,7 @@ $(function () {
 	    const total = adult + teen;
 	    if (total === 0) {
 	      $(".seat-overlay").show();
-	      $(".selseat").prop("disabled", true).css("opacity", "0.5");
+	      $(".selseat").prop("disabled", true).css("opacity", "1.0");
 	    } else {
 	      $(".seat-overlay").hide();
 	      $(".selseat").each(function () {
