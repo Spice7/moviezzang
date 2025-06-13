@@ -8,10 +8,14 @@
     pageEncoding="UTF-8"%>
 <%
 String movie_id =request.getParameter("movie_id");
+String selectDate = request.getParameter("screening_date");
 ScreeningDAO dao = ScreeningDAO.getInstance();
 
 //HashMap을 담을 list 생성
-List<HashMap<String,String>> list = dao.getTheaterCount(movie_id);
+List<HashMap<String,String>> list = dao.getTheaterCount(movie_id, selectDate);
+
+System.out.println("movie_id: " + movie_id + ", selectDate: " + selectDate);
+
 
 JSONArray arr = new JSONArray();
 

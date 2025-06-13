@@ -24,7 +24,7 @@ public class ScreeningDAO {
 	}
 
 	//극장갯수
-	public List<HashMap<String, String>> getTheaterCount(String movie_id){
+	public List<HashMap<String, String>> getTheaterCount(String movie_id,String selectDate){
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
 		Connection conn = db.getConnection();
 		PreparedStatement pst = null;
@@ -34,12 +34,13 @@ public class ScreeningDAO {
 				+ "join auditorium a on  a.id = s.auditorium_id \r\n"
 				+ "join theater t on a.theater_id = t.id \r\n"
 				+ "join movie m on s.movie_id = m.id\r\n"
-				+ "where s.movie_id = ? and s.start_time > now() \r\n"
+				+ "where s.movie_id = ? and date(s.start_time) = ? and s.start_time>now() \r\n"
 				+ "group by t.region";
 
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, movie_id);
+			pst.setString(2, selectDate);
 			rs=pst.executeQuery();
 
 			while(rs.next()) {

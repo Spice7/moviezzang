@@ -148,7 +148,7 @@ div.bookcontainer{
   width: 100%;
   padding: 5px 10px;
   box-sizing: border-box;
-  border-bottom: 1px solid #ddd;
+  border-bottom	: 1px solid #ddd;
 }
 
 .bookcontainer .timebox span {
@@ -247,43 +247,47 @@ $(function () {
   let currentMovie_id = null;
   let selectedDate = null;
 
-  // ✅ 영화 클릭 처리 함수
+  //  영화 클릭 처리 함수
   function handleMovieClick(movie_id) {
     currentMovie_id = movie_id;
+
+    const regions = [
+        "서울", "경기", "인천", "대전/충청/세종",
+        "부산/대구/경산", "광주/전라", "강원", "제주"
+      ];
+
+    // (1) 항상 지역 버튼 초기화
+	  $("button.btnlocal").each(function(idx){
+	    $(this).text(regions[idx]);
+	    $(this).prop("disabled", true);
+	  });
+	  $("#theater").empty();
+	  $(".showtimes").empty();
+
+
     $.ajax({
       type: "get",
       url: "<%=request.getContextPath()%>/book/booking/bookList.jsp",
       dataType: "json",
-      data: { movie_id: currentMovie_id },
+      data: { movie_id: currentMovie_id,
+    	  	  screening_date: selectedDate
+      },
       success: function (res) {
-        $("button.btnlocal").each(function () {
-          let originalText = $(this).text().split("(")[0].trim();
-          $(this).text(originalText);
+    	  const map = {};
+          res.forEach(item => map[item.region.trim()] = item.theater_count);
+			console.log("요청보낼때:",currentMovie_id, "sdate:",selectedDate);
 
+        $("button.btnlocal").each(function (idx) {
+            const region = regions[idx].trim();
+            const count = map[region] || 0;
+
+            $(this).text(region + (count > 0 ? `(${count})` : ""));
+            $(this).prop("disabled", count === 0);
         });
-
-        $.each(res, function (i, item) {
-          $("button.btnlocal").each(function () {
-            let regionName = $(this).text().trim();
-            if (regionName == item.region) {
-              $(this).text(item.region + "(" + item.theater_count + ")");
-            }
-
-          });
-        });
-
-        $("button.btnlocal").each(function () {
-            if (!$(this).text().includes("(")) {
-              $(this).prop("disabled", true);
-            } else {
-              $(this).prop("disabled", false);
-            }
-          });
       }
     });
   }
-
-  // ✅ 초기 진입 시 movie_id가 있을 경우 처리
+  //  초기 진입 시 movie_id가 있을 경우 처리
   <% if (mov_id != null) { %>
     currentMovie_id = "<%=mov_id%>";
     const $targetBtn = $(`button.movielist[movie_id='${currentMovie_id}']`);
@@ -304,7 +308,7 @@ $(function () {
     }
   <% } %>
 
-  // ✅ 영화 버튼 클릭 시
+  //  영화 버튼 클릭 시
   $(document).on("click", "button.movielist", function () {
     $(".movielist").removeClass("btn-active");
     $(".btnlocal").removeClass("btn-active");
@@ -331,12 +335,15 @@ $(function () {
     $.ajax({
       type: "get",
       dataType: "json",
-      data: { movie_id: currentMovie_id, region: region },
+      data: { movie_id: currentMovie_id, region: region,
+    	  screening_date: selectedDate
+      },
       url: "<%=request.getContextPath()%>/book/booking/theaterList.jsp",
       success: function (res) {
         let h = "";
         $.each(res, function (i, item) {
-          h += "<li><button class='btntheater btn-basiclist'>" + item.theater_name + "</button></li>";
+			const disabled = (item.can_reserve === "1")? "" : "disabled";
+          h += `<li><button class='btntheater btn-basiclist' ${disabled}>${item.theater_name}</button></li>`;
         });
         $("#theater").html(h);
       },
@@ -346,14 +353,14 @@ $(function () {
     });
   });
 
-  // ✅ 상영관 클릭 시
+  //  상영관 클릭 시
   $(document).on("click", ".btntheater", function () {
     $(".btntheater").removeClass("btn-active");
     $(this).addClass("btn-active");
     tryAutoLoadShowTimes();
   });
 
-  // ✅ 날짜 버튼 자동 생성
+  //  날짜 버튼 자동 생성
   function generateDateButtons() {
     const today = new Date();
     const dayLabels = ['일', '월', '화', '수', '목', '금', '토'];
@@ -375,18 +382,28 @@ $(function () {
     }
 
     $(".date-selector").html(html);
+
+    $(".btn-date").eq(0).trigger("click");
+
     selectedDate = today.toISOString().slice(0, 10);
   }
 
-  // ✅ 날짜 클릭 시
+  //  날짜 클릭 시
   $(document).on("click", ".btn-date", function () {
     selectedDate = $(this).data("date");
     $(".btn-date").removeClass("btn-active");
+    $(".btnlocal").removeClass("btn-active");
+    $(".btntheater").removeClass("btn-active");
+    $(".timebox").hide();
     $(this).addClass("btn-active");
+
+    if (currentMovie_id) {
+        handleMovieClick(currentMovie_id);   // ★ 추가!
+      }
     tryAutoLoadShowTimes();
   });
 
-  // ✅ 상영 정보 출력
+  //  상영 정보 출력
   function loadShowTimes(theaterName) {
     $.ajax({
       type: "post",
@@ -434,7 +451,7 @@ $(function () {
     });
   }
 
-  // ✅ 조건 충족 시 자동 상영 정보 불러오기
+  //  조건 충족 시 자동 상영 정보 불러오기
   function tryAutoLoadShowTimes() {
     const theaterName = $(".btntheater.btn-active").text();
     if (theaterName && currentMovie_id && selectedDate) {
@@ -442,11 +459,10 @@ $(function () {
     }
   }
 
-  // ✅ 초기 날짜 버튼 생성
+  //  초기 날짜 버튼 생성
   generateDateButtons();
 });
 </script>
-
 </head>
 <%
 MovieDAO dao = MovieDAO.getInstance();

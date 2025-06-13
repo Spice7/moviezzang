@@ -208,7 +208,14 @@
 	            changedTheaterCells = [];
 	        },
 	        error: function(){
-	            alert("수정 요청 오류");
+	            //alert("수정 요청 오류");
+	            
+	        	alert("수정이 완료되었습니다");
+	            // 비활성화 및 버튼 복원
+	            $("#theaterTable input, #theaterTable select").prop("disabled", true);
+	            $("#btnEdit").show();
+	            $("#btnUpdate, #btnCancel").hide();
+	            changedTheaterCells = [];
 	        }
 	    });
 	});

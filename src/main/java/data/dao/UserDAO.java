@@ -713,4 +713,25 @@ public class UserDAO {
 		
 	}
 	
+	// 결제 후 마일리지 추가
+	public void updateMileage(int mileage, String id)
+	{
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql = "update user set mileage = mileage + ? where id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, mileage);
+			pstmt.setString(2, id);
+			
+			pstmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
 }

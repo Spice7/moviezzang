@@ -131,36 +131,33 @@ public class TheaterDAO {
 	    return map;
 	}
 
-	//영화에따른 지역에서 상영하는 극장 전체조회
-	public List<HashMap<String, String>> getTheaterName(String movie_id, String region){;
-		List<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
-		Connection conn = db.getConnection();
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		String sql = "select distinct t.name as theater_name \n"
-				+ "from screening s\n"
-				+ "join auditorium a on s.auditorium_id = a.id\n"
-				+ "join theater t on a.theater_id = t.id\n"
-				+ "where t.region = ? and s.movie_id = ? and s.start_time > now()";
-		try {
-			pst= conn.prepareStatement(sql);
-			pst.setString(1, region);
-			pst.setString(2, movie_id);
-			rs=pst.executeQuery();
-
-			while(rs.next()) {
-				HashMap<String, String> map = new HashMap<String, String>();
-
-				map.put("theater_name", rs.getString("theater_name"));
-				list.add(map);
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			db.dbClose(rs, pst, conn);
-		}
-		return list;
+	//지역에서 상영하는 극장정보 조회
+	public List<HashMap<String, String>> getTheaterListWithReserve(String movie_id, String selectDate, String region) {
+	    List<HashMap<String, String>> list = new ArrayList<>();
+	    Connection conn = db.getConnection();
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    String sql = "SELECT t.name AS theater_name, " +
+	                 "CASE WHEN COUNT(s.id) > 0 THEN 1 ELSE 0 END AS can_reserve " +
+	                 "FROM theater t " +
+	                 "LEFT JOIN auditorium a ON a.theater_id = t.id " +
+	                 "LEFT JOIN screening s ON s.auditorium_id = a.id AND s.movie_id = ? AND DATE(s.start_time) = ? " +
+	                 "WHERE t.region = ? " +
+	                 "GROUP BY t.id";
+	    try {
+	        pst = conn.prepareStatement(sql);
+	        pst.setString(1, movie_id);
+	        pst.setString(2, selectDate);
+	        pst.setString(3, region);
+	        rs = pst.executeQuery();
+	        while(rs.next()) {
+	            HashMap<String, String> map = new HashMap<>();
+	            map.put("theater_name", rs.getString("theater_name"));
+	            map.put("can_reserve", rs.getString("can_reserve"));
+	            list.add(map);
+	        }
+	    } catch (SQLException e) { e.printStackTrace(); }
+	    finally { db.dbClose(rs, pst, conn); }
+	    return list;
 	}
 }

@@ -1,3 +1,4 @@
+<%@page import="data.dao.UserDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,6 +12,26 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 <title>회원가입</title>
+<%
+	UserDAO dao = UserDAO.getInstance();
+
+    String root=request.getContextPath();
+    String loginok=(String)session.getAttribute("loginok");
+
+    System.out.println(loginok);
+    
+    //로그인 했을 경우 회원가입 페이지로 이동 못하게
+    if(loginok=="yes" && !dao.getUserType((String)session.getAttribute("userid")).equals("ADMIN"))
+    {            
+%>
+    <script type="text/javascript">
+    
+        //history.back();
+        location.href="<%=root%>/index.jsp";
+    </script>
+<%
+}
+%>
 <script type="text/javascript">
 	$(function () {
 		
@@ -265,8 +286,6 @@ i.dash {
 }
 </style>
 <%
-	String root=request.getContextPath();
-
 	String signupButtonStr = "가입하기";
 	String adminChk = "";
 		

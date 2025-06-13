@@ -103,8 +103,14 @@ String currentMain = request.getParameter("main");
 					<%
 					}
 					%>
-					<a href=""
+					<%if(loginok!=null){ %>
+					<a href="<%=request.getContextPath()%>/index.jsp?main=book/booking/bookMain.jsp"
 						class="!bg-primary !text-white px-6 py-2 !rounded-button whitespace-nowrap !text-sm hover:!bg-opacity-90 !transition-colors !no-underline">빠른예매</a>
+					<%}else{%>
+					<a href="#" id="openLoginModal3"
+						class="!bg-primary !text-white px-6 py-2 !rounded-button whitespace-nowrap !text-sm hover:!bg-opacity-90 !transition-colors !no-underline">빠른예매</a>
+					<% }%>
+
 				</div>
 
 			</div>
@@ -121,6 +127,14 @@ String currentMain = request.getParameter("main");
 		}
 	};
 	document.getElementById('openLoginModal2').onclick = function(e) {
+		e.preventDefault();
+		if (window.openShadowLoginModal) {
+			window.openShadowLoginModal();
+		} else {
+			alert('로그인 모달이 준비되지 않았습니다.');
+		}
+	};
+	document.getElementById('openLoginModal3').onclick = function(e) {
 		e.preventDefault();
 		if (window.openShadowLoginModal) {
 			window.openShadowLoginModal();

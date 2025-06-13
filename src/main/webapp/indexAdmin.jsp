@@ -7,6 +7,7 @@
 <%
 	// 관리자 체크
 	String userid = (String)session.getAttribute("userid");
+	String mContent = request.getParameter("maincontent");
 	UserDAO dao = UserDAO.getInstance();
 	
 	if(userid == null || !dao.getUserType(userid).equals("ADMIN"))
@@ -132,6 +133,8 @@
 	function loadContents(content) {
 		$("#main-content").load(content);
 	}
+	
+	loadContents('./admin/adminMember.jsp');
 	
 	$(".sidebar>div>a").on("click", function(){
 		$(".sidebar>div>a").removeClass("active");
