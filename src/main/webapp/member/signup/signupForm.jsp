@@ -122,7 +122,7 @@
 				return false;
 			}
 		
-		// 아이디 한글,영문 정규식 검사
+		// 이름 한글,영문 정규식 검사
 			 var nameRegex = /^[가-힣a-zA-Z\s]+$/;
 			if (!nameRegex.test(f.name.value)) {
   			 alert("이름은 한글과 영어만 입력 가능합니다.");
