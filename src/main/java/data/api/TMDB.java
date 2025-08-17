@@ -15,7 +15,7 @@ import org.json.simple.parser.JSONParser;
 @SuppressWarnings("unchecked")
 
 public class TMDB {
-	private String apiKey = "4b5b6ecd35061a1b21381bae419c6d9b";			// API Key
+	private String apiKey = "API 키를 여기에 입력";			// API Key
 	private Map<Long, String> genreMap = new HashMap<Long, String>();	// id는 숫자가 크지 않지만 json.simple은 number 타입을 long으로 변환한다
 
 	// 생성할 때 장르 ID를 한글로 변환하여 ID<->한글장르명 으로 매핑
